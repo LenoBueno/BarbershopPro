@@ -17,6 +17,11 @@ export default function RootLayout() {
           <Stack.Screen name="auth/login" />
           <Stack.Screen name="auth/register" />
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="profile/appointments" />
+          <Stack.Screen name="profile/reviews" />
+          <Stack.Screen name="profile/review" />
+          <Stack.Screen name="profile/referrals" />
+          <Stack.Screen name="profile/settings" />
         </Stack>
       </AuthProvider>
     </SafeAreaProvider>

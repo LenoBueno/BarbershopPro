@@ -54,31 +54,46 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.menu}>
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity 
+            style={styles.menuItem}
+            onPress={() => router.push('/profile/appointments')}
+          >
             <Ionicons name="calendar-outline" size={24} color={colors.textSecondary} />
             <Text style={styles.menuText}>Meus Agendamentos</Text>
             <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity 
+            style={styles.menuItem}
+            onPress={() => router.push('/profile/reviews')}
+          >
             <Ionicons name="star-outline" size={24} color={colors.textSecondary} />
             <Text style={styles.menuText}>Avaliações</Text>
             <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity 
+            style={styles.menuItem}
+            onPress={() => router.push('/profile/referrals')}
+          >
             <Ionicons name="people-outline" size={24} color={colors.textSecondary} />
             <Text style={styles.menuText}>Indicar Amigos</Text>
             <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity 
+            style={styles.menuItem}
+            onPress={() => Alert.alert('Em breve', 'Vale Presente estará disponível em breve')}
+          >
             <Ionicons name="gift-outline" size={24} color={colors.textSecondary} />
             <Text style={styles.menuText}>Vale Presente</Text>
             <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity 
+            style={styles.menuItem}
+            onPress={() => router.push('/profile/settings')}
+          >
             <Ionicons name="settings-outline" size={24} color={colors.textSecondary} />
             <Text style={styles.menuText}>Configurações</Text>
             <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
