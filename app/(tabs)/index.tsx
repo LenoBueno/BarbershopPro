@@ -4,7 +4,7 @@ import { Screen } from '@/components/layout/Screen';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import { useProfile } from '@/hooks/useProfile';
-import { colors, spacing, typography, borderRadius, shadows } from '@/constants/theme';
+import { spacing, typography, borderRadius, shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -176,7 +176,7 @@ function QuickActions({ router }: { router: any }) {
 export default function HomeScreen() {
   const router = useRouter();
   const { client, refreshClient } = useAuth();
-  const { tierColor } = useTheme();
+  const { colors, tierColor } = useTheme();
   const { appointments, loadAppointments } = useProfile(client?.id);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -199,6 +199,8 @@ export default function HomeScreen() {
     .filter(a => a.status === 'confirmado' || a.status === 'em_atendimento')
     .slice(0, 3);
 
+  const styles = createStyles(colors);
+  
   if (!client) {
     return <Screen><View /></Screen>;
   }
@@ -241,7 +243,8 @@ export default function HomeScreen() {
 // STYLES
 // ============================================
 
-const styles = StyleSheet.create({
+function createStyles(colors: any) {
+  return StyleSheet.create({
   container: {
     flex: 1,
     padding: spacing.lg,
@@ -399,3 +402,4 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
 });
+}

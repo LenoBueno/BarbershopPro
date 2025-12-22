@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/hooks/useTheme';
 import { useRouter } from 'expo-router';
-import { colors, spacing, typography, borderRadius } from '@/constants/theme';
+import { spacing, typography, borderRadius } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 
 // ============================================
@@ -96,7 +96,7 @@ function MenuList({
 
 export default function ProfileScreen() {
   const { client, signOut } = useAuth();
-  const { tierColor } = useTheme();
+  const { colors, tierColor } = useTheme();
   const router = useRouter();
 
   const handleLogout = () => {
@@ -145,6 +145,8 @@ export default function ProfileScreen() {
     },
   ];
 
+  const styles = createStyles(colors);
+  
   if (!client) {
     return <Screen><View /></Screen>;
   }
@@ -182,7 +184,8 @@ export default function ProfileScreen() {
 // STYLES
 // ============================================
 
-const styles = StyleSheet.create({
+function createStyles(colors: any) {
+  return StyleSheet.create({
   container: {
     flex: 1,
     padding: spacing.lg,
@@ -261,3 +264,4 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
 });
+}
