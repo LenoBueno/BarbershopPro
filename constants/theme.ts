@@ -1,3 +1,29 @@
+// ============================================
+// TIER COLORS
+// ============================================
+
+export const tierColors = {
+  ouro: {
+    primary: '#fbbf24',
+    light: '#fef3c7',
+    gradient: ['#fbbf24', '#f59e0b'],
+  },
+  prata: {
+    primary: '#9ca3af',
+    light: '#e5e7eb',
+    gradient: ['#d1d5db', '#9ca3af'],
+  },
+  bronze: {
+    primary: '#cd7f32',
+    light: '#fed7aa',
+    gradient: ['#fb923c', '#cd7f32'],
+  },
+};
+
+// ============================================
+// BASE COLORS
+// ============================================
+
 export const colors = {
   primary: '#8b5cf6',
   secondary: '#6366f1',
@@ -18,6 +44,10 @@ export const colors = {
   disabled: '#525252',
 };
 
+// ============================================
+// SPACING
+// ============================================
+
 export const spacing = {
   xs: 4,
   sm: 8,
@@ -27,6 +57,10 @@ export const spacing = {
   xxl: 32,
 };
 
+// ============================================
+// BORDER RADIUS
+// ============================================
+
 export const borderRadius = {
   sm: 4,
   md: 8,
@@ -34,6 +68,10 @@ export const borderRadius = {
   xl: 16,
   full: 9999,
 };
+
+// ============================================
+// TYPOGRAPHY
+// ============================================
 
 export const typography = {
   h1: {
@@ -73,6 +111,10 @@ export const typography = {
   },
 };
 
+// ============================================
+// SHADOWS
+// ============================================
+
 export const shadows = {
   sm: {
     shadowColor: '#000',
@@ -96,3 +138,19 @@ export const shadows = {
     elevation: 8,
   },
 };
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+export function getTierColor(tier: 'bronze' | 'prata' | 'ouro'): string {
+  return tierColors[tier].primary;
+}
+
+export function getTierLightColor(tier: 'bronze' | 'prata' | 'ouro'): string {
+  return tierColors[tier].light;
+}
+
+export function getTierGradient(tier: 'bronze' | 'prata' | 'ouro'): string[] {
+  return tierColors[tier].gradient;
+}

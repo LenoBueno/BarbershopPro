@@ -3,12 +3,100 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Screen } from '@/components/layout/Screen';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
+import { useTheme } from '@/hooks/useTheme';
 import { useRouter } from 'expo-router';
 import { colors, spacing, typography, borderRadius } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 
+// ============================================
+// COMPONENTS
+// ============================================
+
+function ProfileHeader({ 
+  name, 
+  email, 
+  phone, 
+  tierColor 
+}: { 
+  name: string; 
+  email: string | null; 
+  phone: string; 
+  tierColor: string;
+}) {
+  return (
+    <View style={styles.header}>
+      <View style={[styles.avatar, { borderColor: tierColor }]}>
+        <Ionicons name="person" size={48} color={tierColor} />
+      </View>
+      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.email}>{email}</Text>
+      <Text style={styles.phone}>{phone}</Text>
+    </View>
+  );
+}
+
+function LoyaltyStats({
+  points,
+  tier,
+  tierColor,
+}: {
+  points: number;
+  tier: string;
+  tierColor: string;
+}) {
+  return (
+    <View style={styles.statsCard}>
+      <View style={styles.stat}>
+        <Text style={[styles.statValue, { color: tierColor }]}>{points}</Text>
+        <Text style={styles.statLabel}>Pontos</Text>
+      </View>
+      <View style={styles.divider} />
+      <View style={styles.stat}>
+        <Text style={[styles.statValue, { color: tierColor }]}>{tier.toUpperCase()}</Text>
+        <Text style={styles.statLabel}>Nível</Text>
+      </View>
+    </View>
+  );
+}
+
+interface MenuItem {
+  icon: string;
+  label: string;
+  route?: string;
+  onPress?: () => void;
+}
+
+function MenuList({ 
+  items, 
+  router 
+}: { 
+  items: MenuItem[]; 
+  router: any;
+}) {
+  return (
+    <View style={styles.menu}>
+      {items.map((item, index) => (
+        <TouchableOpacity 
+          key={index}
+          style={styles.menuItem}
+          onPress={item.route ? () => router.push(item.route) : item.onPress}
+        >
+          <Ionicons name={item.icon as any} size={24} color={colors.textSecondary} />
+          <Text style={styles.menuText}>{item.label}</Text>
+          <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+}
+
+// ============================================
+// MAIN SCREEN
+// ============================================
+
 export default function ProfileScreen() {
   const { client, signOut } = useAuth();
+  const { tierColor } = useTheme();
   const router = useRouter();
 
   const handleLogout = () => {
@@ -29,76 +117,55 @@ export default function ProfileScreen() {
     );
   };
 
+  const menuItems: MenuItem[] = [
+    {
+      icon: 'calendar-outline',
+      label: 'Meus Agendamentos',
+      route: '/profile/appointments',
+    },
+    {
+      icon: 'star-outline',
+      label: 'Avaliações',
+      route: '/profile/reviews',
+    },
+    {
+      icon: 'people-outline',
+      label: 'Indicar Amigos',
+      route: '/profile/referrals',
+    },
+    {
+      icon: 'gift-outline',
+      label: 'Vale Presente',
+      onPress: () => Alert.alert('Em breve', 'Vale Presente estará disponível em breve'),
+    },
+    {
+      icon: 'settings-outline',
+      label: 'Configurações',
+      route: '/profile/settings',
+    },
+  ];
+
+  if (!client) {
+    return <Screen><View /></Screen>;
+  }
+
   return (
     <Screen scroll>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.avatar}>
-            <Ionicons name="person" size={48} color={colors.primary} />
-          </View>
-          <Text style={styles.name}>{client?.name}</Text>
-          <Text style={styles.email}>{client?.email}</Text>
-          <Text style={styles.phone}>{client?.phone}</Text>
-        </View>
+        <ProfileHeader
+          name={client.name}
+          email={client.email}
+          phone={client.phone}
+          tierColor={tierColor}
+        />
 
-        <View style={styles.statsCard}>
-          <View style={styles.stat}>
-            <Text style={styles.statValue}>{client?.loyalty_points}</Text>
-            <Text style={styles.statLabel}>Pontos</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.stat}>
-            <Text style={styles.statValue}>{client?.loyalty_tier?.toUpperCase()}</Text>
-            <Text style={styles.statLabel}>Nível</Text>
-          </View>
-        </View>
+        <LoyaltyStats
+          points={client.loyalty_points}
+          tier={client.loyalty_tier}
+          tierColor={tierColor}
+        />
 
-        <View style={styles.menu}>
-          <TouchableOpacity 
-            style={styles.menuItem}
-            onPress={() => router.push('/profile/appointments')}
-          >
-            <Ionicons name="calendar-outline" size={24} color={colors.textSecondary} />
-            <Text style={styles.menuText}>Meus Agendamentos</Text>
-            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={styles.menuItem}
-            onPress={() => router.push('/profile/reviews')}
-          >
-            <Ionicons name="star-outline" size={24} color={colors.textSecondary} />
-            <Text style={styles.menuText}>Avaliações</Text>
-            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={styles.menuItem}
-            onPress={() => router.push('/profile/referrals')}
-          >
-            <Ionicons name="people-outline" size={24} color={colors.textSecondary} />
-            <Text style={styles.menuText}>Indicar Amigos</Text>
-            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={styles.menuItem}
-            onPress={() => Alert.alert('Em breve', 'Vale Presente estará disponível em breve')}
-          >
-            <Ionicons name="gift-outline" size={24} color={colors.textSecondary} />
-            <Text style={styles.menuText}>Vale Presente</Text>
-            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={styles.menuItem}
-            onPress={() => router.push('/profile/settings')}
-          >
-            <Ionicons name="settings-outline" size={24} color={colors.textSecondary} />
-            <Text style={styles.menuText}>Configurações</Text>
-            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
-          </TouchableOpacity>
-        </View>
+        <MenuList items={menuItems} router={router} />
 
         <Button
           title="Sair"
@@ -110,6 +177,10 @@ export default function ProfileScreen() {
     </Screen>
   );
 }
+
+// ============================================
+// STYLES
+// ============================================
 
 const styles = StyleSheet.create({
   container: {
@@ -125,6 +196,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: borderRadius.full,
     backgroundColor: colors.surface,
+    borderWidth: 3,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: spacing.md,
@@ -156,7 +228,6 @@ const styles = StyleSheet.create({
   },
   statValue: {
     ...typography.h2,
-    color: colors.primary,
   },
   statLabel: {
     ...typography.bodySmall,

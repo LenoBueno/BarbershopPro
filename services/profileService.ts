@@ -1,5 +1,9 @@
 import { getSupabaseClient } from '@/template';
 
+// ============================================
+// TYPES
+// ============================================
+
 export interface AppointmentDetail {
   id: string;
   appointment_date: string;
@@ -43,6 +47,12 @@ export interface Referral {
   created_at: string;
   confirmed_at: string | null;
 }
+
+// ============================================
+// CONSTANTS
+// ============================================
+
+const REVIEW_POINTS = 10;
 
 // ============================================
 // APPOINTMENTS
@@ -164,6 +174,27 @@ export async function getMyReviews(clientId: string) {
   }
 }
 
+async function awardReviewPoints(clientId: string) {
+  const supabase = getSupabaseClient();
+  
+  try {
+    const { data: client } = await supabase
+      .from('clients')
+      .select('loyalty_points')
+      .eq('id', clientId)
+      .single();
+
+    if (!client) return;
+
+    await supabase
+      .from('clients')
+      .update({ loyalty_points: (client.loyalty_points || 0) + REVIEW_POINTS })
+      .eq('id', clientId);
+  } catch (error) {
+    console.error('Award points error:', error);
+  }
+}
+
 export async function createReview(params: {
   appointmentId: string;
   clientId: string;
@@ -190,13 +221,7 @@ export async function createReview(params: {
       return { data: null, error: error.message };
     }
 
-    // Award points for review (example: 10 points)
-    await supabase
-      .from('clients')
-      .update({ 
-        loyalty_points: supabase.raw('loyalty_points + 10')
-      })
-      .eq('id', params.clientId);
+    await awardReviewPoints(params.clientId);
 
     return { data, error: null };
   } catch (error: any) {
@@ -213,7 +238,6 @@ export async function getMyReferrals(clientId: string) {
   try {
     const supabase = getSupabaseClient();
     
-    // First get the client to find referrer_id
     const { data: client } = await supabase
       .from('clients')
       .select('id')
@@ -249,7 +273,6 @@ export async function createReferral(params: {
   try {
     const supabase = getSupabaseClient();
     
-    // Check if phone already referred
     const { data: existing } = await supabase
       .from('referrals')
       .select('id')
