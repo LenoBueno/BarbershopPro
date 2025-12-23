@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
-import { typography, borderRadius, spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/useTheme';
+import { colors, typography, borderRadius, spacing } from '@/constants/theme';
 
 interface ButtonProps {
   title: string;
@@ -22,9 +21,7 @@ export function Button({
   style,
   textStyle,
 }: ButtonProps) {
-  const { colors } = useTheme();
   const isDisabled = disabled || loading;
-  const styles = createStyles(colors);
 
   return (
     <TouchableOpacity
@@ -60,8 +57,7 @@ export function Button({
   );
 }
 
-function createStyles(colors: any) {
-  return StyleSheet.create({
+const styles = StyleSheet.create({
   button: {
     height: 48,
     borderRadius: borderRadius.md,
@@ -100,4 +96,3 @@ function createStyles(colors: any) {
     color: colors.textTertiary,
   },
 });
-}

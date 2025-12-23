@@ -12,8 +12,7 @@ import { Screen } from '@/components/layout/Screen';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
-import { useTheme } from '@/hooks/useTheme';
-import { spacing, typography, borderRadius, shadows } from '@/constants/theme';
+import { colors, spacing, typography, borderRadius, shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { Referral } from '@/services/profileService';
@@ -21,7 +20,6 @@ import { Referral } from '@/services/profileService';
 export default function ReferralsScreen() {
   const router = useRouter();
   const { client } = useAuth();
-  const { colors } = useTheme();
   const { referrals, addReferral, operating } = useProfile(client?.id);
   const [phone, setPhone] = useState('');
 
@@ -74,8 +72,6 @@ export default function ReferralsScreen() {
   const confirmedCount = referrals.filter((r) => r.status === 'confirmado').length;
   const totalPoints = referrals.reduce((sum, r) => sum + r.points_awarded, 0);
 
-  const styles = createStyles(colors);
-  
   const renderReferral = ({ item }: { item: Referral }) => (
     <View style={styles.referralCard}>
       <View style={styles.referralHeader}>
@@ -172,8 +168,7 @@ export default function ReferralsScreen() {
   );
 }
 
-function createStyles(colors: any) {
-  return StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -316,4 +311,3 @@ function createStyles(colors: any) {
     textAlign: 'center',
   },
 });
-}

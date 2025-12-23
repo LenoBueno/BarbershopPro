@@ -12,8 +12,7 @@ import { Screen } from '@/components/layout/Screen';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { useBooking } from '@/hooks/useBooking';
-import { useTheme } from '@/hooks/useTheme';
-import { spacing, typography, borderRadius, shadows } from '@/constants/theme';
+import { colors, spacing, typography, borderRadius, shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -22,7 +21,6 @@ type Step = 'service' | 'datetime' | 'confirm';
 export default function BookingScreen() {
   const router = useRouter();
   const { client } = useAuth();
-  const { colors } = useTheme();
   const {
     services,
     barbers,
@@ -121,8 +119,6 @@ export default function BookingScreen() {
       );
     }
   };
-
-  const styles = createStyles(colors);
 
   return (
     <Screen>
@@ -369,288 +365,286 @@ export default function BookingScreen() {
   );
 }
 
-function createStyles(colors: any) {
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    header: {
-      padding: spacing.lg,
-      backgroundColor: colors.surface,
-    },
-    title: {
-      ...typography.h2,
-      color: colors.text,
-      marginBottom: spacing.lg,
-    },
-    steps: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    stepItem: {
-      alignItems: 'center',
-    },
-    stepCircle: {
-      width: 32,
-      height: 32,
-      borderRadius: borderRadius.full,
-      backgroundColor: colors.surfaceLight,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: spacing.xs,
-    },
-    stepCircleActive: {
-      backgroundColor: colors.primary,
-    },
-    stepNumber: {
-      ...typography.bodySmall,
-      color: colors.text,
-    },
-    stepLabel: {
-      ...typography.caption,
-      color: colors.textSecondary,
-    },
-    stepLine: {
-      flex: 1,
-      height: 2,
-      backgroundColor: colors.surfaceLight,
-      marginHorizontal: spacing.sm,
-    },
-    content: {
-      flex: 1,
-      padding: spacing.lg,
-    },
-    sectionTitle: {
-      ...typography.h3,
-      color: colors.text,
-      marginBottom: spacing.md,
-    },
-    serviceCard: {
-      flexDirection: 'row',
-      backgroundColor: colors.surface,
-      borderRadius: borderRadius.lg,
-      padding: spacing.md,
-      marginBottom: spacing.sm,
-      borderWidth: 2,
-      borderColor: 'transparent',
-    },
-    serviceCardActive: {
-      borderColor: colors.primary,
-      backgroundColor: colors.surfaceLight,
-    },
-    serviceInfo: {
-      flex: 1,
-    },
-    serviceName: {
-      ...typography.body,
-      color: colors.text,
-      fontWeight: '600',
-    },
-    serviceDescription: {
-      ...typography.bodySmall,
-      color: colors.textSecondary,
-      marginTop: spacing.xs,
-    },
-    serviceDuration: {
-      ...typography.caption,
-      color: colors.primary,
-      marginTop: spacing.xs,
-    },
-    servicePrice: {
-      ...typography.h3,
-      color: colors.primary,
-    },
-    barberCard: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: colors.surface,
-      borderRadius: borderRadius.lg,
-      padding: spacing.md,
-      marginBottom: spacing.sm,
-      borderWidth: 2,
-      borderColor: 'transparent',
-    },
-    barberCardActive: {
-      borderColor: colors.primary,
-      backgroundColor: colors.surfaceLight,
-    },
-    barberAvatar: {
-      width: 48,
-      height: 48,
-      borderRadius: borderRadius.full,
-      backgroundColor: colors.surfaceLight,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginRight: spacing.md,
-    },
-    barberInfo: {
-      flex: 1,
-    },
-    barberName: {
-      ...typography.body,
-      color: colors.text,
-      fontWeight: '600',
-    },
-    barberSpecialty: {
-      ...typography.bodySmall,
-      color: colors.textSecondary,
-      marginTop: spacing.xs,
-    },
-    barberRating: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: colors.surfaceLight,
-      paddingHorizontal: spacing.sm,
-      paddingVertical: spacing.xs,
-      borderRadius: borderRadius.sm,
-    },
-    ratingText: {
-      ...typography.bodySmall,
-      color: colors.text,
-      marginLeft: spacing.xs,
-    },
-    datesContainer: {
-      marginBottom: spacing.lg,
-    },
-    dateCard: {
-      width: 80,
-      backgroundColor: colors.surface,
-      borderRadius: borderRadius.lg,
-      padding: spacing.md,
-      marginRight: spacing.sm,
-      alignItems: 'center',
-      borderWidth: 2,
-      borderColor: 'transparent',
-    },
-    dateCardActive: {
-      borderColor: colors.primary,
-      backgroundColor: colors.surfaceLight,
-    },
-    weekday: {
-      ...typography.caption,
-      color: colors.textSecondary,
-      textTransform: 'uppercase',
-    },
-    weekdayActive: {
-      color: colors.primary,
-    },
-    dateText: {
-      ...typography.body,
-      color: colors.text,
-      marginTop: spacing.xs,
-    },
-    dateTextActive: {
-      color: colors.primary,
-      fontWeight: '600',
-    },
-    loadingText: {
-      ...typography.body,
-      color: colors.textSecondary,
-      textAlign: 'center',
-      padding: spacing.lg,
-    },
-    timeSlotsGrid: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      marginHorizontal: -spacing.xs,
-    },
-    timeSlot: {
-      width: '22%',
-      margin: '1.5%',
-      backgroundColor: colors.surface,
-      borderRadius: borderRadius.md,
-      padding: spacing.md,
-      alignItems: 'center',
-      borderWidth: 2,
-      borderColor: 'transparent',
-    },
-    timeSlotActive: {
-      borderColor: colors.primary,
-      backgroundColor: colors.surfaceLight,
-    },
-    timeSlotUnavailable: {
-      opacity: 0.3,
-    },
-    timeSlotText: {
-      ...typography.bodySmall,
-      color: colors.text,
-    },
-    timeSlotTextActive: {
-      color: colors.primary,
-      fontWeight: '600',
-    },
-    timeSlotTextUnavailable: {
-      color: colors.textTertiary,
-    },
-    confirmationContainer: {
-      flex: 1,
-    },
-    confirmCard: {
-      backgroundColor: colors.surface,
-      borderRadius: borderRadius.lg,
-      padding: spacing.lg,
-      marginBottom: spacing.lg,
-    },
-    confirmRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingVertical: spacing.md,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    confirmInfo: {
-      marginLeft: spacing.md,
-      flex: 1,
-    },
-    confirmLabel: {
-      ...typography.caption,
-      color: colors.textSecondary,
-    },
-    confirmValue: {
-      ...typography.body,
-      color: colors.text,
-      marginTop: spacing.xs,
-    },
-    confirmTotal: {
-      borderBottomWidth: 0,
-      paddingTop: spacing.lg,
-      justifyContent: 'space-between',
-    },
-    totalLabel: {
-      ...typography.h3,
-      color: colors.text,
-    },
-    totalValue: {
-      ...typography.h2,
-      color: colors.primary,
-    },
-    infoBox: {
-      flexDirection: 'row',
-      backgroundColor: colors.info + '20',
-      borderRadius: borderRadius.md,
-      padding: spacing.md,
-      alignItems: 'center',
-    },
-    infoText: {
-      ...typography.bodySmall,
-      color: colors.text,
-      marginLeft: spacing.sm,
-      flex: 1,
-    },
-    footer: {
-      flexDirection: 'row',
-      padding: spacing.lg,
-      backgroundColor: colors.surface,
-      borderTopWidth: 1,
-      borderTopColor: colors.border,
-    },
-    backButton: {
-      flex: 1,
-      marginRight: spacing.sm,
-    },
-    nextButton: {
-      flex: 2,
-    },
-  });
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    padding: spacing.lg,
+    backgroundColor: colors.surface,
+  },
+  title: {
+    ...typography.h2,
+    color: colors.text,
+    marginBottom: spacing.lg,
+  },
+  steps: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  stepItem: {
+    alignItems: 'center',
+  },
+  stepCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.surfaceLight,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.xs,
+  },
+  stepCircleActive: {
+    backgroundColor: colors.primary,
+  },
+  stepNumber: {
+    ...typography.bodySmall,
+    color: colors.text,
+  },
+  stepLabel: {
+    ...typography.caption,
+    color: colors.textSecondary,
+  },
+  stepLine: {
+    flex: 1,
+    height: 2,
+    backgroundColor: colors.surfaceLight,
+    marginHorizontal: spacing.sm,
+  },
+  content: {
+    flex: 1,
+    padding: spacing.lg,
+  },
+  sectionTitle: {
+    ...typography.h3,
+    color: colors.text,
+    marginBottom: spacing.md,
+  },
+  serviceCard: {
+    flexDirection: 'row',
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  serviceCardActive: {
+    borderColor: colors.primary,
+    backgroundColor: colors.surfaceLight,
+  },
+  serviceInfo: {
+    flex: 1,
+  },
+  serviceName: {
+    ...typography.body,
+    color: colors.text,
+    fontWeight: '600',
+  },
+  serviceDescription: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    marginTop: spacing.xs,
+  },
+  serviceDuration: {
+    ...typography.caption,
+    color: colors.primary,
+    marginTop: spacing.xs,
+  },
+  servicePrice: {
+    ...typography.h3,
+    color: colors.primary,
+  },
+  barberCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  barberCardActive: {
+    borderColor: colors.primary,
+    backgroundColor: colors.surfaceLight,
+  },
+  barberAvatar: {
+    width: 48,
+    height: 48,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.surfaceLight,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: spacing.md,
+  },
+  barberInfo: {
+    flex: 1,
+  },
+  barberName: {
+    ...typography.body,
+    color: colors.text,
+    fontWeight: '600',
+  },
+  barberSpecialty: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    marginTop: spacing.xs,
+  },
+  barberRating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.surfaceLight,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.sm,
+  },
+  ratingText: {
+    ...typography.bodySmall,
+    color: colors.text,
+    marginLeft: spacing.xs,
+  },
+  datesContainer: {
+    marginBottom: spacing.lg,
+  },
+  dateCard: {
+    width: 80,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    marginRight: spacing.sm,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  dateCardActive: {
+    borderColor: colors.primary,
+    backgroundColor: colors.surfaceLight,
+  },
+  weekday: {
+    ...typography.caption,
+    color: colors.textSecondary,
+    textTransform: 'uppercase',
+  },
+  weekdayActive: {
+    color: colors.primary,
+  },
+  dateText: {
+    ...typography.body,
+    color: colors.text,
+    marginTop: spacing.xs,
+  },
+  dateTextActive: {
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  loadingText: {
+    ...typography.body,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    padding: spacing.lg,
+  },
+  timeSlotsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: -spacing.xs,
+  },
+  timeSlot: {
+    width: '22%',
+    margin: '1.5%',
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  timeSlotActive: {
+    borderColor: colors.primary,
+    backgroundColor: colors.surfaceLight,
+  },
+  timeSlotUnavailable: {
+    opacity: 0.3,
+  },
+  timeSlotText: {
+    ...typography.bodySmall,
+    color: colors.text,
+  },
+  timeSlotTextActive: {
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  timeSlotTextUnavailable: {
+    color: colors.textTertiary,
+  },
+  confirmationContainer: {
+    flex: 1,
+  },
+  confirmCard: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
+  },
+  confirmRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  confirmInfo: {
+    marginLeft: spacing.md,
+    flex: 1,
+  },
+  confirmLabel: {
+    ...typography.caption,
+    color: colors.textSecondary,
+  },
+  confirmValue: {
+    ...typography.body,
+    color: colors.text,
+    marginTop: spacing.xs,
+  },
+  confirmTotal: {
+    borderBottomWidth: 0,
+    paddingTop: spacing.lg,
+    justifyContent: 'space-between',
+  },
+  totalLabel: {
+    ...typography.h3,
+    color: colors.text,
+  },
+  totalValue: {
+    ...typography.h2,
+    color: colors.primary,
+  },
+  infoBox: {
+    flexDirection: 'row',
+    backgroundColor: colors.info + '20',
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    alignItems: 'center',
+  },
+  infoText: {
+    ...typography.bodySmall,
+    color: colors.text,
+    marginLeft: spacing.sm,
+    flex: 1,
+  },
+  footer: {
+    flexDirection: 'row',
+    padding: spacing.lg,
+    backgroundColor: colors.surface,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  backButton: {
+    flex: 1,
+    marginRight: spacing.sm,
+  },
+  nextButton: {
+    flex: 2,
+  },
+});

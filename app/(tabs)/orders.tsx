@@ -12,15 +12,13 @@ import { Screen } from '@/components/layout/Screen';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { useOrders } from '@/hooks/useOrders';
-import { useTheme } from '@/hooks/useTheme';
-import { spacing, typography, borderRadius, shadows } from '@/constants/theme';
+import { colors, spacing, typography, borderRadius, shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 
 type Tab = 'products' | 'cart' | 'history';
 
 export default function OrdersScreen() {
   const { client } = useAuth();
-  const { colors } = useTheme();
   const {
     products,
     orders,
@@ -135,8 +133,6 @@ export default function OrdersScreen() {
       year: 'numeric',
     });
   };
-
-  const styles = createStyles(colors);
 
   return (
     <Screen>
@@ -369,8 +365,7 @@ export default function OrdersScreen() {
   );
 }
 
-function createStyles(colors: any) {
-  return StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -649,4 +644,3 @@ function createStyles(colors: any) {
     fontWeight: '600',
   },
 });
-}

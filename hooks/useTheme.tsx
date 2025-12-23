@@ -1,5 +1,5 @@
 import { useAuth } from './useAuth';
-import { getTierColor, getTierLightColor, getTierGradient, getDynamicColors, baseColors } from '@/constants/theme';
+import { getTierColor, getTierLightColor, getTierGradient, colors } from '@/constants/theme';
 
 export function useTheme() {
   const { client } = useAuth();
@@ -10,7 +10,6 @@ export function useTheme() {
     tierColor: getTierColor(tier),
     tierLightColor: getTierLightColor(tier),
     tierGradient: getTierGradient(tier),
-    colors: getDynamicColors(tier),
-    baseColors,
+    colors,
   };
 }

@@ -21,14 +21,19 @@ export const tierColors = {
 };
 
 // ============================================
-// BASE COLORS (Static - não dependem do tier)
+// BASE COLORS
 // ============================================
 
-export const baseColors = {
+export const colors = {
+  primary: '#8b5cf6',
+  secondary: '#6366f1',
   success: '#10b981',
   warning: '#f59e0b',
   error: '#ef4444',
   info: '#3b82f6',
+  gold: '#fbbf24',
+  silver: '#d1d5db',
+  bronze: '#cd7f32',
   background: '#0a0a0a',
   surface: '#1a1a1a',
   surfaceLight: '#2a2a2a',
@@ -37,33 +42,6 @@ export const baseColors = {
   textTertiary: '#737373',
   border: '#2a2a2a',
   disabled: '#525252',
-};
-
-// ============================================
-// DYNAMIC COLORS (Baseados no tier do cliente)
-// ============================================
-
-export function getDynamicColors(tier: 'bronze' | 'prata' | 'ouro') {
-  const tierColor = tierColors[tier].primary;
-  
-  return {
-    ...baseColors,
-    primary: tierColor,
-    secondary: tierColor,
-    gold: tierColors.ouro.primary,
-    silver: tierColors.prata.primary,
-    bronze: tierColors.bronze.primary,
-  };
-}
-
-// Para compatibilidade com código existente (usa bronze por padrão)
-export const colors = {
-  ...baseColors,
-  primary: tierColors.bronze.primary,
-  secondary: tierColors.bronze.primary,
-  gold: tierColors.ouro.primary,
-  silver: tierColors.prata.primary,
-  bronze: tierColors.bronze.primary,
 };
 
 // ============================================
