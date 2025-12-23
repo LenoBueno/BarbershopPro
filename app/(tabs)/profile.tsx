@@ -68,10 +68,12 @@ interface MenuItem {
 
 function MenuList({ 
   items, 
-  router 
+  router,
+  tierColor 
 }: { 
   items: MenuItem[]; 
   router: any;
+  tierColor: string;
 }) {
   return (
     <View style={styles.menu}>
@@ -81,7 +83,7 @@ function MenuList({
           style={styles.menuItem}
           onPress={item.route ? () => router.push(item.route) : item.onPress}
         >
-          <Ionicons name={item.icon as any} size={24} color={colors.textSecondary} />
+          <Ionicons name={item.icon as any} size={24} color={tierColor} />
           <Text style={styles.menuText}>{item.label}</Text>
           <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
         </TouchableOpacity>
@@ -165,7 +167,7 @@ export default function ProfileScreen() {
           tierColor={tierColor}
         />
 
-        <MenuList items={menuItems} router={router} />
+        <MenuList items={menuItems} router={router} tierColor={tierColor} />
 
         <Button
           title="Sair"

@@ -12,6 +12,7 @@ import { Screen } from '@/components/layout/Screen';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { useOrders } from '@/hooks/useOrders';
+import { useTheme } from '@/hooks/useTheme';
 import { colors, spacing, typography, borderRadius, shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -19,6 +20,7 @@ type Tab = 'products' | 'cart' | 'history';
 
 export default function OrdersScreen() {
   const { client } = useAuth();
+  const { tierColor } = useTheme();
   const {
     products,
     orders,
@@ -145,28 +147,28 @@ export default function OrdersScreen() {
         {/* Tabs */}
         <View style={styles.tabs}>
           <TouchableOpacity
-            style={[styles.tab, activeTab === 'products' && styles.tabActive]}
+            style={[styles.tab, activeTab === 'products' && { borderBottomColor: tierColor }]}
             onPress={() => setActiveTab('products')}
           >
             <Ionicons
               name="storefront"
               size={20}
-              color={activeTab === 'products' ? colors.primary : colors.textSecondary}
+              color={activeTab === 'products' ? tierColor : colors.textSecondary}
             />
-            <Text style={[styles.tabText, activeTab === 'products' && styles.tabTextActive]}>
+            <Text style={[styles.tabText, activeTab === 'products' && { color: tierColor, fontWeight: '600' }]}>
               Produtos
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.tab, activeTab === 'cart' && styles.tabActive]}
+            style={[styles.tab, activeTab === 'cart' && { borderBottomColor: tierColor }]}
             onPress={() => setActiveTab('cart')}
           >
             <View style={styles.cartIconContainer}>
               <Ionicons
                 name="cart"
                 size={20}
-                color={activeTab === 'cart' ? colors.primary : colors.textSecondary}
+                color={activeTab === 'cart' ? tierColor : colors.textSecondary}
               />
               {cart.length > 0 && (
                 <View style={styles.badge}>
@@ -174,21 +176,21 @@ export default function OrdersScreen() {
                 </View>
               )}
             </View>
-            <Text style={[styles.tabText, activeTab === 'cart' && styles.tabTextActive]}>
+            <Text style={[styles.tabText, activeTab === 'cart' && { color: tierColor, fontWeight: '600' }]}>
               Carrinho
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.tab, activeTab === 'history' && styles.tabActive]}
+            style={[styles.tab, activeTab === 'history' && { borderBottomColor: tierColor }]}
             onPress={() => setActiveTab('history')}
           >
             <Ionicons
               name="time"
               size={20}
-              color={activeTab === 'history' ? colors.primary : colors.textSecondary}
+              color={activeTab === 'history' ? tierColor : colors.textSecondary}
             />
-            <Text style={[styles.tabText, activeTab === 'history' && styles.tabTextActive]}>
+            <Text style={[styles.tabText, activeTab === 'history' && { color: tierColor, fontWeight: '600' }]}>
               Histórico
             </Text>
           </TouchableOpacity>
@@ -206,20 +208,20 @@ export default function OrdersScreen() {
               renderItem={({ item }) => (
                 <View style={styles.productCard}>
                   <View style={styles.productImage}>
-                    <Ionicons name="cube" size={32} color={colors.primary} />
+                    <Ionicons name="cube" size={32} color={tierColor} />
                   </View>
                   <View style={styles.productInfo}>
                     <Text style={styles.productName}>{item.name}</Text>
                     <Text style={styles.productDescription}>{item.description}</Text>
                     <View style={styles.productFooter}>
-                      <Text style={styles.productPrice}>R$ {item.price.toFixed(2)}</Text>
+                      <Text style={[styles.productPrice, { color: tierColor }]}>R$ {item.price.toFixed(2)}</Text>
                       <Text style={styles.productStock}>
                         {item.stock_quantity > 0 ? `${item.stock_quantity} em estoque` : 'Esgotado'}
                       </Text>
                     </View>
                   </View>
                   <TouchableOpacity
-                    style={[styles.addButton, item.stock_quantity === 0 && styles.addButtonDisabled]}
+                    style={[styles.addButton, { backgroundColor: tierColor }, item.stock_quantity === 0 && styles.addButtonDisabled]}
                     onPress={() => handleAddToCart(item)}
                     disabled={item.stock_quantity === 0}
                   >
@@ -247,11 +249,11 @@ export default function OrdersScreen() {
                 renderItem={({ item }) => (
                   <View style={styles.cartItem}>
                     <View style={styles.cartItemImage}>
-                      <Ionicons name="cube" size={24} color={colors.primary} />
+                      <Ionicons name="cube" size={24} color={tierColor} />
                     </View>
                     <View style={styles.cartItemInfo}>
                       <Text style={styles.cartItemName}>{item.product.name}</Text>
-                      <Text style={styles.cartItemPrice}>R$ {item.product.price.toFixed(2)}</Text>
+                      <Text style={[styles.cartItemPrice, { color: tierColor }]}>R$ {item.product.price.toFixed(2)}</Text>
                     </View>
                     <View style={styles.quantityControls}>
                       <TouchableOpacity
@@ -294,7 +296,7 @@ export default function OrdersScreen() {
                 <View style={styles.cartFooter}>
                   <View style={styles.totalRow}>
                     <Text style={styles.totalLabel}>Total</Text>
-                    <Text style={styles.totalValue}>R$ {getCartTotal().toFixed(2)}</Text>
+                    <Text style={[styles.totalValue, { color: tierColor }]}>R$ {getCartTotal().toFixed(2)}</Text>
                   </View>
                   <Button
                     title="Finalizar Pedido"
@@ -324,7 +326,7 @@ export default function OrdersScreen() {
                         </Text>
                       </View>
                     </View>
-                    <Text style={styles.orderTotal}>R$ {item.total_amount.toFixed(2)}</Text>
+                    <Text style={[styles.orderTotal, { color: tierColor }]}>R$ {item.total_amount.toFixed(2)}</Text>
                   </View>
 
                   <View style={styles.orderItems}>
@@ -393,16 +395,12 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   tabActive: {
-    borderBottomColor: colors.primary,
+    // borderBottomColor set dynamically
   },
   tabText: {
     ...typography.bodySmall,
     color: colors.textSecondary,
     marginLeft: spacing.xs,
-  },
-  tabTextActive: {
-    color: colors.primary,
-    fontWeight: '600',
   },
   cartIconContainer: {
     position: 'relative',
@@ -468,7 +466,6 @@ const styles = StyleSheet.create({
   },
   productPrice: {
     ...typography.h3,
-    color: colors.primary,
   },
   productStock: {
     ...typography.caption,
@@ -478,7 +475,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: borderRadius.full,
-    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -536,7 +532,6 @@ const styles = StyleSheet.create({
   },
   cartItemPrice: {
     ...typography.bodySmall,
-    color: colors.primary,
     marginTop: spacing.xs,
   },
   quantityControls: {
@@ -580,7 +575,6 @@ const styles = StyleSheet.create({
   },
   totalValue: {
     ...typography.h2,
-    color: colors.primary,
   },
   orderCard: {
     backgroundColor: colors.surface,
@@ -613,7 +607,6 @@ const styles = StyleSheet.create({
   },
   orderTotal: {
     ...typography.h3,
-    color: colors.primary,
   },
   orderItems: {
     borderTopWidth: 1,

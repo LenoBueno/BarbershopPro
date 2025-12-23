@@ -109,13 +109,13 @@ function LoyaltyCard({
   );
 }
 
-function AppointmentCard({ appointment }: { appointment: UpcomingAppointment }) {
+function AppointmentCard({ appointment, tierColor }: { appointment: UpcomingAppointment; tierColor: string }) {
   const isActive = appointment.status === 'em_atendimento';
 
   return (
     <View style={styles.appointmentCard}>
       <View style={styles.appointmentDate}>
-        <Text style={styles.appointmentDay}>{formatDate(appointment.appointment_date)}</Text>
+        <Text style={[styles.appointmentDay, { color: tierColor }]}>{formatDate(appointment.appointment_date)}</Text>
         <Text style={styles.appointmentTime}>{formatTime(appointment.appointment_time)}</Text>
       </View>
       
@@ -134,19 +134,19 @@ function AppointmentCard({ appointment }: { appointment: UpcomingAppointment }) 
   );
 }
 
-function EmptyAppointments({ onBook }: { onBook: () => void }) {
+function EmptyAppointments({ onBook, tierColor }: { onBook: () => void; tierColor: string }) {
   return (
     <View style={styles.emptyState}>
       <Ionicons name="calendar-outline" size={48} color={colors.textTertiary} />
       <Text style={styles.emptyText}>Nenhum agendamento</Text>
-      <TouchableOpacity style={styles.bookButton} onPress={onBook}>
+      <TouchableOpacity style={[styles.bookButton, { backgroundColor: tierColor }]} onPress={onBook}>
         <Text style={styles.bookButtonText}>Agendar Agora</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-function QuickActions({ router }: { router: any }) {
+function QuickActions({ router, tierColor }: { router: any; tierColor: string }) {
   const actions = [
     { icon: 'calendar-outline', label: 'Agendar', route: '/(tabs)/booking' },
     { icon: 'cart-outline', label: 'Produtos', route: '/(tabs)/orders' },
@@ -161,7 +161,7 @@ function QuickActions({ router }: { router: any }) {
           style={styles.actionCard}
           onPress={() => router.push(action.route)}
         >
-          <Ionicons name={action.icon as any} size={24} color={colors.primary} />
+          <Ionicons name={action.icon as any} size={24} color={tierColor} />
           <Text style={styles.actionText}>{action.label}</Text>
         </TouchableOpacity>
       ))}
@@ -220,18 +220,18 @@ export default function HomeScreen() {
           <Text style={styles.sectionTitle}>Próximos Agendamentos</Text>
           
           {upcomingAppointments.length === 0 ? (
-            <EmptyAppointments onBook={() => router.push('/(tabs)/booking')} />
+            <EmptyAppointments onBook={() => router.push('/(tabs)/booking')} tierColor={tierColor} />
           ) : (
             <FlatList
               data={upcomingAppointments}
               keyExtractor={(item) => item.id}
               scrollEnabled={false}
-              renderItem={({ item }) => <AppointmentCard appointment={item} />}
+              renderItem={({ item }) => <AppointmentCard appointment={item} tierColor={tierColor} />}
             />
           )}
         </View>
 
-        <QuickActions router={router} />
+        <QuickActions router={router} tierColor={tierColor} />
       </View>
     </Screen>
   );
@@ -317,7 +317,6 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   bookButton: {
-    backgroundColor: colors.primary,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.md,
@@ -342,7 +341,6 @@ const styles = StyleSheet.create({
   },
   appointmentDay: {
     ...typography.bodySmall,
-    color: colors.primary,
     fontWeight: '600',
   },
   appointmentTime: {

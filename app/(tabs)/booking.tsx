@@ -12,6 +12,7 @@ import { Screen } from '@/components/layout/Screen';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { useBooking } from '@/hooks/useBooking';
+import { useTheme } from '@/hooks/useTheme';
 import { colors, spacing, typography, borderRadius, shadows } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -21,6 +22,7 @@ type Step = 'service' | 'datetime' | 'confirm';
 export default function BookingScreen() {
   const router = useRouter();
   const { client } = useAuth();
+  const { tierColor } = useTheme();
   const {
     services,
     barbers,
@@ -130,7 +132,7 @@ export default function BookingScreen() {
           {/* Progress Steps */}
           <View style={styles.steps}>
             <View style={styles.stepItem}>
-              <View style={[styles.stepCircle, step !== 'service' && styles.stepCircleActive]}>
+              <View style={[styles.stepCircle, step !== 'service' && { backgroundColor: tierColor }]}>
                 <Text style={styles.stepNumber}>1</Text>
               </View>
               <Text style={styles.stepLabel}>Serviço</Text>
@@ -139,7 +141,7 @@ export default function BookingScreen() {
             <View style={styles.stepLine} />
             
             <View style={styles.stepItem}>
-              <View style={[styles.stepCircle, step === 'confirm' && styles.stepCircleActive]}>
+              <View style={[styles.stepCircle, step === 'confirm' && { backgroundColor: tierColor }]}>
                 <Text style={styles.stepNumber}>2</Text>
               </View>
               <Text style={styles.stepLabel}>Horário</Text>
@@ -148,7 +150,7 @@ export default function BookingScreen() {
             <View style={styles.stepLine} />
             
             <View style={styles.stepItem}>
-              <View style={[styles.stepCircle, step === 'confirm' && styles.stepCircleActive]}>
+              <View style={[styles.stepCircle, step === 'confirm' && { backgroundColor: tierColor }]}>
                 <Text style={styles.stepNumber}>3</Text>
               </View>
               <Text style={styles.stepLabel}>Confirmar</Text>
@@ -170,16 +172,16 @@ export default function BookingScreen() {
                   <TouchableOpacity
                     style={[
                       styles.serviceCard,
-                      selectedService?.id === item.id && styles.serviceCardActive,
+                      selectedService?.id === item.id && { borderColor: tierColor, backgroundColor: colors.surfaceLight },
                     ]}
                     onPress={() => setSelectedService(item)}
                   >
                     <View style={styles.serviceInfo}>
                       <Text style={styles.serviceName}>{item.name}</Text>
                       <Text style={styles.serviceDescription}>{item.description}</Text>
-                      <Text style={styles.serviceDuration}>{item.duration_minutes} min</Text>
+                      <Text style={[styles.serviceDuration, { color: tierColor }]}>{item.duration_minutes} min</Text>
                     </View>
-                    <Text style={styles.servicePrice}>R$ {item.price.toFixed(2)}</Text>
+                    <Text style={[styles.servicePrice, { color: tierColor }]}>R$ {item.price.toFixed(2)}</Text>
                   </TouchableOpacity>
                 )}
               />
@@ -195,12 +197,12 @@ export default function BookingScreen() {
                   <TouchableOpacity
                     style={[
                       styles.barberCard,
-                      selectedBarber?.id === item.id && styles.barberCardActive,
+                      selectedBarber?.id === item.id && { borderColor: tierColor, backgroundColor: colors.surfaceLight },
                     ]}
                     onPress={() => setSelectedBarber(item)}
                   >
                     <View style={styles.barberAvatar}>
-                      <Ionicons name="person" size={24} color={colors.primary} />
+                      <Ionicons name="person" size={24} color={tierColor} />
                     </View>
                     <View style={styles.barberInfo}>
                       <Text style={styles.barberName}>{item.name}</Text>
@@ -230,13 +232,13 @@ export default function BookingScreen() {
                   return (
                     <TouchableOpacity
                       key={index}
-                      style={[styles.dateCard, isSelected && styles.dateCardActive]}
+                      style={[styles.dateCard, isSelected && { borderColor: tierColor, backgroundColor: colors.surfaceLight }]}
                       onPress={() => setSelectedDate(date)}
                     >
-                      <Text style={[styles.weekday, isSelected && styles.weekdayActive]}>
+                      <Text style={[styles.weekday, isSelected && { color: tierColor }]}>
                         {formatWeekday(date)}
                       </Text>
-                      <Text style={[styles.dateText, isSelected && styles.dateTextActive]}>
+                      <Text style={[styles.dateText, isSelected && { color: tierColor, fontWeight: '600' }]}>
                         {formatDate(date)}
                       </Text>
                     </TouchableOpacity>
@@ -257,7 +259,7 @@ export default function BookingScreen() {
                       style={[
                         styles.timeSlot,
                         !slot.available && styles.timeSlotUnavailable,
-                        selectedTime === slot.time && styles.timeSlotActive,
+                        selectedTime === slot.time && { borderColor: tierColor, backgroundColor: colors.surfaceLight },
                       ]}
                       onPress={() => slot.available && setSelectedTime(slot.time)}
                       disabled={!slot.available}
@@ -266,7 +268,7 @@ export default function BookingScreen() {
                         style={[
                           styles.timeSlotText,
                           !slot.available && styles.timeSlotTextUnavailable,
-                          selectedTime === slot.time && styles.timeSlotTextActive,
+                          selectedTime === slot.time && { color: tierColor, fontWeight: '600' },
                         ]}
                       >
                         {slot.time}
@@ -283,7 +285,7 @@ export default function BookingScreen() {
             <View style={styles.confirmationContainer}>
               <View style={styles.confirmCard}>
                 <View style={styles.confirmRow}>
-                  <Ionicons name="cut" size={20} color={colors.primary} />
+                  <Ionicons name="cut" size={20} color={tierColor} />
                   <View style={styles.confirmInfo}>
                     <Text style={styles.confirmLabel}>Serviço</Text>
                     <Text style={styles.confirmValue}>{selectedService?.name}</Text>
@@ -291,7 +293,7 @@ export default function BookingScreen() {
                 </View>
 
                 <View style={styles.confirmRow}>
-                  <Ionicons name="person" size={20} color={colors.primary} />
+                  <Ionicons name="person" size={20} color={tierColor} />
                   <View style={styles.confirmInfo}>
                     <Text style={styles.confirmLabel}>Barbeiro</Text>
                     <Text style={styles.confirmValue}>{selectedBarber?.name}</Text>
@@ -299,7 +301,7 @@ export default function BookingScreen() {
                 </View>
 
                 <View style={styles.confirmRow}>
-                  <Ionicons name="calendar" size={20} color={colors.primary} />
+                  <Ionicons name="calendar" size={20} color={tierColor} />
                   <View style={styles.confirmInfo}>
                     <Text style={styles.confirmLabel}>Data</Text>
                     <Text style={styles.confirmValue}>
@@ -309,7 +311,7 @@ export default function BookingScreen() {
                 </View>
 
                 <View style={styles.confirmRow}>
-                  <Ionicons name="time" size={20} color={colors.primary} />
+                  <Ionicons name="time" size={20} color={tierColor} />
                   <View style={styles.confirmInfo}>
                     <Text style={styles.confirmLabel}>Horário</Text>
                     <Text style={styles.confirmValue}>{selectedTime}</Text>
@@ -318,7 +320,7 @@ export default function BookingScreen() {
 
                 <View style={[styles.confirmRow, styles.confirmTotal]}>
                   <Text style={styles.totalLabel}>Total</Text>
-                  <Text style={styles.totalValue}>
+                  <Text style={[styles.totalValue, { color: tierColor }]}>
                     R$ {selectedService?.price.toFixed(2)}
                   </Text>
                 </View>
@@ -396,7 +398,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   stepCircleActive: {
-    backgroundColor: colors.primary,
+    // backgroundColor set dynamically
   },
   stepNumber: {
     ...typography.bodySmall,
@@ -431,8 +433,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   serviceCardActive: {
-    borderColor: colors.primary,
-    backgroundColor: colors.surfaceLight,
+    // borderColor and backgroundColor set dynamically
   },
   serviceInfo: {
     flex: 1,
@@ -449,12 +450,10 @@ const styles = StyleSheet.create({
   },
   serviceDuration: {
     ...typography.caption,
-    color: colors.primary,
     marginTop: spacing.xs,
   },
   servicePrice: {
     ...typography.h3,
-    color: colors.primary,
   },
   barberCard: {
     flexDirection: 'row',
@@ -467,8 +466,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   barberCardActive: {
-    borderColor: colors.primary,
-    backgroundColor: colors.surfaceLight,
+    // borderColor and backgroundColor set dynamically
   },
   barberAvatar: {
     width: 48,
@@ -519,8 +517,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   dateCardActive: {
-    borderColor: colors.primary,
-    backgroundColor: colors.surfaceLight,
+    // borderColor and backgroundColor set dynamically
   },
   weekday: {
     ...typography.caption,
@@ -528,7 +525,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   weekdayActive: {
-    color: colors.primary,
+    // color set dynamically
   },
   dateText: {
     ...typography.body,
@@ -536,8 +533,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   dateTextActive: {
-    color: colors.primary,
-    fontWeight: '600',
+    // color and fontWeight set dynamically
   },
   loadingText: {
     ...typography.body,
@@ -561,8 +557,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   timeSlotActive: {
-    borderColor: colors.primary,
-    backgroundColor: colors.surfaceLight,
+    // borderColor and backgroundColor set dynamically
   },
   timeSlotUnavailable: {
     opacity: 0.3,
@@ -572,8 +567,7 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   timeSlotTextActive: {
-    color: colors.primary,
-    fontWeight: '600',
+    // color and fontWeight set dynamically
   },
   timeSlotTextUnavailable: {
     color: colors.textTertiary,
@@ -618,7 +612,6 @@ const styles = StyleSheet.create({
   },
   totalValue: {
     ...typography.h2,
-    color: colors.primary,
   },
   infoBox: {
     flexDirection: 'row',

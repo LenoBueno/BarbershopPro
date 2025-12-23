@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
 import { colors, typography, borderRadius, spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/useTheme';
 
 interface ButtonProps {
   title: string;
@@ -22,14 +23,17 @@ export function Button({
   textStyle,
 }: ButtonProps) {
   const isDisabled = disabled || loading;
+  const { tierColor } = useTheme();
 
   return (
     <TouchableOpacity
       style={[
         styles.button,
         variant === 'primary' && styles.primaryButton,
+        variant === 'primary' && { backgroundColor: tierColor },
         variant === 'secondary' && styles.secondaryButton,
         variant === 'outline' && styles.outlineButton,
+        variant === 'outline' && { borderColor: tierColor },
         isDisabled && styles.disabledButton,
         style,
       ]}
@@ -38,7 +42,7 @@ export function Button({
       activeOpacity={0.7}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'outline' ? colors.primary : colors.background} />
+        <ActivityIndicator color={variant === 'outline' ? tierColor : colors.background} />
       ) : (
         <Text
           style={[
@@ -46,6 +50,7 @@ export function Button({
             variant === 'primary' && styles.primaryText,
             variant === 'secondary' && styles.secondaryText,
             variant === 'outline' && styles.outlineText,
+            variant === 'outline' && { color: tierColor },
             isDisabled && styles.disabledText,
             textStyle,
           ]}
@@ -66,7 +71,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
   },
   primaryButton: {
-    backgroundColor: colors.primary,
+    // backgroundColor set dynamically via style prop
   },
   secondaryButton: {
     backgroundColor: colors.surface,
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
   outlineButton: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: colors.primary,
+    // borderColor set dynamically via style prop
   },
   disabledButton: {
     backgroundColor: colors.disabled,
@@ -90,7 +95,7 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   outlineText: {
-    color: colors.primary,
+    // color set dynamically via style prop
   },
   disabledText: {
     color: colors.textTertiary,
